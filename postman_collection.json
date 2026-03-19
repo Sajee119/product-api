@@ -1,0 +1,265 @@
+{
+  "info": {
+    "name": "Product API",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Production-ready REST API for managing 10,000+ product records",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "product_id",
+      "value": "REPLACE_WITH_REAL_ID",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        },
+        "description": "Check if the API is running"
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"message\": \"Product API is running\",\n  \"version\": \"1.0.0\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get All Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products?page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products"],
+          "query": [
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        },
+        "description": "Get all products with pagination. Default limit is 50, max is 100."
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"total\": 10000,\n  \"page\": 1,\n  \"pages\": 1000,\n  \"limit\": 10,\n  \"data\": [\n    {\n      \"_id\": \"665abc123def456789012345\",\n      \"name\": \"Premium Headphones 1\",\n      \"description\": \"High quality premium headphones - product #1.\",\n      \"price\": 49.99,\n      \"category\": \"Electronics\",\n      \"stock\": 120,\n      \"createdAt\": \"2024-06-01T12:00:00.000Z\",\n      \"updatedAt\": \"2024-06-01T12:00:00.000Z\"\n    }\n  ]\n}"
+        }
+      ]
+    },
+    {
+      "name": "Search Products by Name",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products?search=headphones&page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products"],
+          "query": [
+            { "key": "search", "value": "headphones" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        },
+        "description": "Search products by name using full-text search."
+      },
+      "response": []
+    },
+    {
+      "name": "Filter Products by Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products?category=Electronics&page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products"],
+          "query": [
+            { "key": "category", "value": "Electronics" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        },
+        "description": "Filter products by category (case-insensitive)."
+      },
+      "response": []
+    },
+    {
+      "name": "Sort Products by Price (Ascending)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products?sort=price_asc&page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products"],
+          "query": [
+            { "key": "sort", "value": "price_asc" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        },
+        "description": "Sort products by price ascending. Options: price_asc, price_desc, newest, oldest."
+      },
+      "response": []
+    },
+    {
+      "name": "Filter Products by Price Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products?minPrice=10&maxPrice=100&page=1&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products"],
+          "query": [
+            { "key": "minPrice", "value": "10" },
+            { "key": "maxPrice", "value": "100" },
+            { "key": "page", "value": "1" },
+            { "key": "limit", "value": "10" }
+          ]
+        },
+        "description": "Filter products by price range."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Product by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products/{{product_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products", "{{product_id}}"]
+        },
+        "description": "Get a single product by its MongoDB ID."
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"665abc123def456789012345\",\n    \"name\": \"Premium Headphones 1\",\n    \"description\": \"High quality premium headphones - product #1.\",\n    \"price\": 49.99,\n    \"category\": \"Electronics\",\n    \"stock\": 120,\n    \"createdAt\": \"2024-06-01T12:00:00.000Z\",\n    \"updatedAt\": \"2024-06-01T12:00:00.000Z\"\n  }\n}"
+        },
+        {
+          "name": "Not Found",
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n  \"success\": false,\n  \"message\": \"Product not found\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Create Product",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Smart Wireless Speaker\",\n  \"description\": \"Crystal clear audio with 360-degree sound\",\n  \"price\": 79.99,\n  \"category\": \"Electronics\",\n  \"stock\": 50\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/products",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products"]
+        },
+        "description": "Create a new product. name and price are required."
+      },
+      "response": [
+        {
+          "name": "Created",
+          "status": "Created",
+          "code": 201,
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"665abc123def456789012345\",\n    \"name\": \"Smart Wireless Speaker\",\n    \"description\": \"Crystal clear audio with 360-degree sound\",\n    \"price\": 79.99,\n    \"category\": \"Electronics\",\n    \"stock\": 50,\n    \"createdAt\": \"2024-06-01T12:00:00.000Z\",\n    \"updatedAt\": \"2024-06-01T12:00:00.000Z\"\n  }\n}"
+        },
+        {
+          "name": "Validation Error",
+          "status": "Bad Request",
+          "code": 400,
+          "body": "{\n  \"success\": false,\n  \"message\": \"Product name is required\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Update Product",
+      "request": {
+        "method": "PUT",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": 89.99,\n  \"stock\": 75\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/products/{{product_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products", "{{product_id}}"]
+        },
+        "description": "Update an existing product by ID. Only provide fields to update."
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"data\": {\n    \"_id\": \"665abc123def456789012345\",\n    \"name\": \"Smart Wireless Speaker\",\n    \"description\": \"Crystal clear audio with 360-degree sound\",\n    \"price\": 89.99,\n    \"category\": \"Electronics\",\n    \"stock\": 75,\n    \"createdAt\": \"2024-06-01T12:00:00.000Z\",\n    \"updatedAt\": \"2024-06-01T13:00:00.000Z\"\n  }\n}"
+        },
+        {
+          "name": "Not Found",
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n  \"success\": false,\n  \"message\": \"Product not found\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Delete Product",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/products/{{product_id}}",
+          "host": ["{{base_url}}"],
+          "path": ["api", "products", "{{product_id}}"]
+        },
+        "description": "Delete a product by ID."
+      },
+      "response": [
+        {
+          "name": "Success",
+          "status": "OK",
+          "code": 200,
+          "body": "{\n  \"success\": true,\n  \"message\": \"Product deleted successfully\"\n}"
+        },
+        {
+          "name": "Not Found",
+          "status": "Not Found",
+          "code": 404,
+          "body": "{\n  \"success\": false,\n  \"message\": \"Product not found\"\n}"
+        }
+      ]
+    }
+  ]
+}
